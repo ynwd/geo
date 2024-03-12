@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 
 import {
+  ApiBearerAuth,
   ApiConsumes,
   ApiOperation,
   ApiParam,
@@ -39,6 +40,7 @@ export class AppController {
     status: 200,
     description: 'Version',
   })
+  @ApiBearerAuth()
   getHello() {
     return this.appService.getHello();
   }
@@ -50,6 +52,7 @@ export class AppController {
     description: 'List',
   })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async view() {
     return await this.appService.find();
   }
@@ -65,6 +68,7 @@ export class AppController {
     description: 'The found geo',
   })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async viewOne(@Param() params: any) {
     return await this.appService.findOne(params.id);
   }
@@ -76,6 +80,7 @@ export class AppController {
   })
   @ApiOperation({ summary: 'Delete geo file' })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async delete(@Param() params: any) {
     return await this.appService.delete(params.id);
   }
@@ -85,6 +90,7 @@ export class AppController {
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Upload geo files' })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   uploadFile(
     @Body() body: GeoDto,
     @UploadedFiles(
@@ -107,6 +113,7 @@ export class AppController {
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update geo files' })
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   update(
     @Param() params: any,
     @Body() body: GeoDto,
