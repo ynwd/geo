@@ -27,10 +27,13 @@ import { AppService } from './app.service';
 import { GeoDataFileValidator } from './app.validators';
 import { GeoDto } from './geo.dto';
 import { AuthGuard } from './auth/auth.guard';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 
 const MAX_JSON_FILE = 2 * 1024 * 1024;
 
 @Controller()
+@UseGuards(RolesGuard)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -41,6 +44,7 @@ export class AppController {
     description: 'Version',
   })
   @ApiBearerAuth()
+  @Roles(['admin'])
   getHello() {
     return this.appService.getHello();
   }
