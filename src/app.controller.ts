@@ -12,6 +12,14 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
+
+import {
+  ApiConsumes,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+} from '@nestjs/swagger';
+
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { GeoDataFileValidator } from './app.validators';
@@ -24,27 +32,53 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get version' })
+  @ApiResponse({
+    status: 200,
+    description: 'Version',
+  })
   getHello() {
     return this.appService.getHello();
   }
 
   @Get('view')
+  @ApiOperation({ summary: 'List geo files' })
+  @ApiResponse({
+    status: 200,
+    description: 'List',
+  })
   async view() {
     return await this.appService.find();
   }
 
   @Get('view/:id')
+  @ApiParam({
+    name: 'id',
+    description: 'the geo id',
+  })
+  @ApiOperation({ summary: 'View detail geo file' })
+  @ApiResponse({
+    status: 200,
+    description: 'The found geo',
+  })
   async viewOne(@Param() params: any) {
     return await this.appService.findOne(params.id);
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'the geo id',
+  })
+  @ApiOperation({ summary: 'Delete geo file' })
   async delete(@Param() params: any) {
     return await this.appService.delete(params.id);
   }
 
   @UseInterceptors(FilesInterceptor('files'))
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Upload geo files' })
   uploadFile(
     @Body() body: GeoDto,
     @UploadedFiles(
@@ -64,6 +98,8 @@ export class AppController {
 
   @UseInterceptors(FilesInterceptor('files'))
   @Put(':id')
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Update geo files' })
   update(
     @Param() params: any,
     @Body() body: GeoDto,
