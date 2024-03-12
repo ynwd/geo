@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 
@@ -24,6 +25,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { GeoDataFileValidator } from './app.validators';
 import { GeoDto } from './geo.dto';
+import { AuthGuard } from './auth/auth.guard';
 
 const MAX_JSON_FILE = 2 * 1024 * 1024;
 
@@ -47,6 +49,7 @@ export class AppController {
     status: 200,
     description: 'List',
   })
+  @UseGuards(AuthGuard)
   async view() {
     return await this.appService.find();
   }
@@ -61,6 +64,7 @@ export class AppController {
     status: 200,
     description: 'The found geo',
   })
+  @UseGuards(AuthGuard)
   async viewOne(@Param() params: any) {
     return await this.appService.findOne(params.id);
   }
@@ -71,6 +75,7 @@ export class AppController {
     description: 'the geo id',
   })
   @ApiOperation({ summary: 'Delete geo file' })
+  @UseGuards(AuthGuard)
   async delete(@Param() params: any) {
     return await this.appService.delete(params.id);
   }
@@ -79,6 +84,7 @@ export class AppController {
   @Post()
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Upload geo files' })
+  @UseGuards(AuthGuard)
   uploadFile(
     @Body() body: GeoDto,
     @UploadedFiles(
@@ -100,6 +106,7 @@ export class AppController {
   @Put(':id')
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Update geo files' })
+  @UseGuards(AuthGuard)
   update(
     @Param() params: any,
     @Body() body: GeoDto,
