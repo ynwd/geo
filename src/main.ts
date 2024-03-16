@@ -13,9 +13,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Geo example')
-    .setDescription('The geo API description')
+    .setTitle('Geo CRUD example')
+    .setDescription('The geo data API description')
     .setVersion('1.0')
+    .addTag('geo')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
