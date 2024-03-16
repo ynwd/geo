@@ -1,5 +1,5 @@
 import { AppDataSource } from './data-source';
-import { Geo } from './geo.entity';
+import { Geo } from './geo/geo.entity';
 
 AppDataSource.initialize()
   .then(async () => {

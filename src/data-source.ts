@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { Geo } from './geo.entity';
+import { Geo } from './geo/geo.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
